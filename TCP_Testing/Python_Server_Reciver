@@ -1,0 +1,28 @@
+import socket
+import time
+
+arduino_ip = "172.16.9.18"  # Replace with your Arduino's IP address
+arduino_port = 80
+
+connected = False
+
+while not connected:
+    try:
+        # Connect to the Arduino
+        with socket.create_connection((arduino_ip, arduino_port), timeout=5) as client_socket:
+            print("Connected to Arduino")
+
+            # Receive data from Arduino
+            data = client_socket.recv(1024)
+            print(f"Received: {data.decode()}")
+
+        # Set the flag to exit the loop
+        connected = True
+
+    except socket.error as e:
+        if "Connection refused" in str(e):
+            print("Connection refused. Retrying...")
+            time.sleep(5)  # Wait for 5 seconds before retrying
+        else:
+            print(f"An error occurred: {e}")
+            break  # Exit the loop on other exceptions
