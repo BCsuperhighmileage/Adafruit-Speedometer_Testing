@@ -1,28 +1,17 @@
-import socket
+import requests
 import time
 
-arduino_ip = "172.16.9.18"  # Replace with your Arduino's IP address
-arduino_port = 80
+# Replace with the actual IP address assigned to your ESP32
+esp32_ip = "192.168.4.1"
 
-connected = False
+while True:
+    url = f"http://{esp32_ip}/"
+    response = requests.get(url)
 
-while not connected:
-    try:
-        # Connect to the Arduino
-        with socket.create_connection((arduino_ip, arduino_port), timeout=5) as client_socket:
-            print("Connected to Arduino")
+    if response.status_code == 200:
+        print(f"Received data from ESP32: {response.text}")
+        # Process the received data or trigger your desired actions here
+    else:
+        print(f"Failed to connect to ESP32. Status code: {response.status_code}")
 
-            # Receive data from Arduino
-            data = client_socket.recv(1024)
-            print(f"Received: {data.decode()}")
-
-        # Set the flag to exit the loop
-        connected = True
-
-    except socket.error as e:
-        if "Connection refused" in str(e):
-            print("Connection refused. Retrying...")
-            time.sleep(5)  # Wait for 5 seconds before retrying
-        else:
-            print(f"An error occurred: {e}")
-            break  # Exit the loop on other exceptions
+    time.sleep(.1)  # Adjust the delay according to your needs
