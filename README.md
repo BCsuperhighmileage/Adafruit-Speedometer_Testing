@@ -3,7 +3,7 @@ Our testing page for Adafruit ESP32 communication for our speedometer. This proj
 
 
 ToDo List:
-- add in TCP server to the transmitter code, have the transmitter be its own router.
+- Make the Test Programs work in sync
 - Make the Python TCP reciver work with the User interface program.
 - Conversion from time-stamps to MPH
 - Make sure all the back end is polished before messing with the front end
