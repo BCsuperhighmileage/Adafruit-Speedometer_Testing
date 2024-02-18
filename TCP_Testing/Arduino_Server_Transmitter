@@ -1,0 +1,35 @@
+#include <WiFi.h>
+#include <ESPAsyncWebServer.h>
+
+const char *ssid = "ESP32-Access-Point";
+const char *password = "password";
+
+AsyncWebServer server(80);
+
+int messageCounter = 0;
+
+void setup() {
+  Serial.begin(115200);
+
+  // Create an Access Point
+  WiFi.softAP(ssid, password);
+
+  Serial.println("Access Point Started");
+  Serial.print("IP Address: ");
+  Serial.println(WiFi.softAPIP());
+
+  // Handle root URL request
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    String message = "Hello World #" + String(messageCounter++);
+    request->send(200, "text/plain", message);
+  });
+
+  // Start server
+  server.begin();
+}
+
+void loop() {
+  // Handle requests, if any
+  // server.handleClient();
+}
+
