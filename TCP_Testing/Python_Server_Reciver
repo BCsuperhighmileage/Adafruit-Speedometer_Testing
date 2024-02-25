@@ -5,13 +5,13 @@ import time
 esp32_ip = "192.168.4.1"
 
 while True:
-    url = f"http://{esp32_ip}/"
+    url = f"http://{esp32_ip}/constant"  # Change the URL to the "/constant" route
     response = requests.get(url)
 
     if response.status_code == 200:
-        print(f"Received data from ESP32: {response.text}")
-        # Process the received data or trigger your desired actions here
+        print(f"Received constant data from ESP32: {response.text}")
+        # Process the received constant data or trigger your desired actions here
     else:
         print(f"Failed to connect to ESP32. Status code: {response.status_code}")
 
-    time.sleep(.1)  # Adjust the delay according to your needs
+    time.sleep(1)  # Adjust the delay according to your needs (should match the ESP32 delay)
