@@ -7,6 +7,7 @@ const char *password = "password";
 AsyncWebServer server(80);
 
 int messageCounter = 0;
+String constantData;
 
 void setup() {
   Serial.begin(115200);
@@ -24,12 +25,18 @@ void setup() {
     request->send(200, "text/plain", message);
   });
 
+  // Handle /constant URL request
+  server.on("/constant", HTTP_GET, [](AsyncWebServerRequest *request){
+    String message = "Constant Data #" + String(messageCounter++);
+    constantData = message;  // Update global variable
+    request->send(200, "text/plain", constantData);
+  });
+
   // Start server
   server.begin();
 }
 
 void loop() {
-  // Handle requests, if any
-  // server.handleClient();
+  // You can leave the loop function empty or use it for other non-blocking tasks
 }
 
