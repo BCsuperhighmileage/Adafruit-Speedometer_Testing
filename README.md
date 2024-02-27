@@ -2,6 +2,13 @@
 Our testing page for Adafruit ESP32 communication for our speedometer. This project is currently a work in progress and code may not work for you. Use at your own risk.
 
 
+# New plan for the putting the test code into final design 
+- The reciver will host a webserver that acts as a place to put in your network(The computer and the arduino will have to be on the same network) - A portable router may be best
+- Then after the wifi creditials are entered, then the arduino can connect to the computer and start streaming the data to it. 
+- I think for the final design we will have a rasberry pi that talks to the arduino over serial and hosts its own webserver that runs the GUI so that multiple people can view it at the same time. 
+
+
+
 ToDo List:
 - Make the Test Programs work in sync
 - Make the Python TCP reciver work with the User interface program.
