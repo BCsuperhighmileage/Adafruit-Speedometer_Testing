@@ -1,1 +1,83 @@
+// This code does not currently work and is still a work in process 
 
+
+
+#include <WiFi.h>
+#include <WebServer.h>
+
+const char *ssid = "MyWiFiAP";
+const char *password = "password";
+
+WebServer server(80);
+
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+  // Start in AP mode
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(ssid, password);
+  Serial.println("Access Point started. Connect to the WiFi network and visit http://192.168.4.1");
+
+  // Setup web server
+  server.on("/", HTTP_GET, handleRoot);
+  server.on("/save", HTTP_GET, handleSave);
+  server.begin();
+}
+
+void loop() {
+  server.handleClient();
+}
+
+void handleRoot() {
+  String html = "<html><body>";
+  html += "<h1>Set WiFi Credentials</h1>";
+  html += "<form action='/save' method='get'>";
+  html += "SSID: <input type='text' name='ssid'><br>";
+  html += "Password: <input type='password' name='password'><br>";
+  html += "<input type='submit' value='Save'>";
+  html += "</form></body></html>";
+
+  server.send(200, "text/html", html);
+}
+
+void handleSave() {
+  String ssid = server.arg("ssid");
+  String password = server.arg("password");
+
+  saveCredentials(ssid, password);
+  connectToWiFi(ssid, password); // Attempt to connect to WiFi using the newly saved credentials
+
+  String response = "Credentials saved. SSID: " + ssid + ", Password: " + password;
+  server.send(200, "text/plain", response);
+}
+
+void saveCredentials(String ssid, String password) {
+  // Save the credentials to EEPROM or any non-volatile storage
+  Serial.println("Saving WiFi credentials");
+  // Your implementation to save credentials goes here
+  // For simplicity, you can print them to Serial for now
+  Serial.println("SSID: " + ssid);
+  Serial.println("Password: " + password);
+  Serial.println("Credentials saved");
+}
+
+void connectToWiFi(String ssid, String password) {
+  // Attempt to connect to WiFi using saved credentials
+  Serial.println("Attempting to connect to WiFi...");
+  WiFi.begin(ssid.c_str(), password.c_str());
+
+  int attempts = 0;
+  while (WiFi.status() != WL_CONNECTED && attempts < 20) {
+    delay(1000);
+    Serial.print("Connecting to WiFi... Attempt ");
+    Serial.println(attempts + 1);
+    attempts++;
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("Connected to WiFi");
+  } else {
+    Serial.println("Failed to connect to WiFi");
+  }
+}
