@@ -1,17 +1,18 @@
-import requests
-import time
+import socket
 
-# Replace with the actual IP address assigned to your ESP32
-esp32_ip = "192.168.4.1"
+host = '192.168.1.100'  # Replace with the IP address of your Arduino on the network
+port = 80
 
-while True:
-    url = f"http://{esp32_ip}/constant"  # Change the URL to the "/constant" route
-    response = requests.get(url)
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect((host, port))
 
-    if response.status_code == 200:
-        print(f"Received constant data from ESP32: {response.text}")
-        # Process the received constant data or trigger your desired actions here
-    else:
-        print(f"Failed to connect to ESP32. Status code: {response.status_code}")
-
-    time.sleep(1)  # Adjust the delay according to your needs (should match the ESP32 delay)
+try:
+    while True:
+        # Read from Arduino and print
+        received_data = sock.recv(1024)
+        if received_data:
+            print(received_data.decode(), end='')  # Print received data from Arduino
+except KeyboardInterrupt:
+    print("Exiting program")
+finally:
+    sock.close()
