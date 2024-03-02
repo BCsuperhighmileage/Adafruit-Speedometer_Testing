@@ -1,1 +1,19 @@
+// All this does is print the data recived from the Arduino, This will do something with the data later, this is just for initial testing. 
+import socket
 
+host = '192.168.1.100'  # Replace with the IP address of your Arduino on the network
+port = 80
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect((host, port))
+
+try:
+    while True:
+        # Read from Arduino and print
+        received_data = sock.recv(1024)
+        if received_data:
+            print(received_data.decode(), end='')  # Print received data from Arduino
+except KeyboardInterrupt:
+    print("Exiting program")
+finally:
+    sock.close()
