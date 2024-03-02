@@ -4,8 +4,8 @@
 #include <RH_RF95.h>
 #include <WiFi.h>
 
-const char *ssid = "ATTdV2uXPi"; 
-const char *password = "phpkjjmc2mv=";
+const char *ssid = "SSID_HERE"; 
+const char *password = "PASSWORD_HERE";
 const char *staticIP = "192.168.1.100";
 const char *gateway = "192.168.1.1";  // Replace with your gateway/router IP address
 const char *subnet = "255.255.255.0";
