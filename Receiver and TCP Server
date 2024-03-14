@@ -1,5 +1,6 @@
 // This is testing and may not work as expected
-
+// To find router on mac, go to network and click on information. 
+// Paste the router ip into the code and the computers up + 1, the router can't always assign the ip and this will need more debugging until it is universal. 
 #include <SPI.h>
 #include <RH_RF95.h>
 #include <WiFi.h>
