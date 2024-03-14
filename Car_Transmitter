@@ -6,7 +6,6 @@
 // level messaging abilities.
 // This is for Adafruit Feather M0 (SAMD21)
 // This is the ardunino WITHOUT the backpack that is meant for the car.
-// This currently just sends voltage data and will collect speed data later. 
 
 
 #include <SPI.h>
@@ -69,7 +68,6 @@ int16_t packetnum = 0;  // packet counter, we increment per xmission
 
 
 
-
 void loop() {
   delay(1000); // Adjust the delay as needed
   Serial.println("Transmitting...");
@@ -80,11 +78,15 @@ void loop() {
   measuredvbat *= 3.3;  // Multiply by 3.3V, our reference voltage
   measuredvbat /= 1024; // convert to voltage
 
-  // Convert the voltage to a string for transmission
-  char radiopacket[20];
-  snprintf(radiopacket, sizeof(radiopacket), "VBat: %.2fV", measuredvbat);
+  // Generate random 8-digit code
+  char randomCode[10];
+  snprintf(randomCode, sizeof(randomCode), "%08d", random(10000000, 99999999));
 
-  Serial.print("Sending "); 
+  // Construct the message with both battery voltage and random code
+  char radiopacket[40];
+  snprintf(radiopacket, sizeof(radiopacket), "VBat:%.2fV|Code:%s", measuredvbat, randomCode);
+
+  Serial.print("Sending: "); 
   Serial.println(radiopacket);
 
   Serial.println("Sending...");
